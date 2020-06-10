@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="600.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.RobotView">
+   <children>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" style="-fx-background-color: grey;">
+         <children>
+            <Label text="Talking Robot" textFill="WHITE">
+               <font>
+                  <Font size="28.0" />
+               </font>
+            </Label>
+         </children>
+      </HBox>
+      <HBox alignment="CENTER" VBox.vgrow="ALWAYS">
+         <children>
+            <ImageView fitHeight="180.0" fitWidth="429.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@Gif_robot.gif" />
+               </image></ImageView>
+            <VBox HBox.hgrow="ALWAYS">
+               <children>
+                  <HBox alignment="CENTER" spacing="10.0">
+                     <children>
+                        <TextField fx:id="input" prefHeight="35.0" promptText="Hey, Human.... hola" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#speak" prefHeight="35.0" prefWidth="100.0" text="Speak" />
+                     </children>
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                     </VBox.margin>
+                  </HBox>
+                  <ListView fx:id="conversationList" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
+                     <VBox.margin>
+                        <Insets bottom="5.0" left="5.0" right="5.0" />
+                     </VBox.margin></ListView>
+               </children>
+            </VBox>
+         </children>
+      </HBox>
+   </children>
+</VBox>
