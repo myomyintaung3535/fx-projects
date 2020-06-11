@@ -8,6 +8,7 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
@@ -15,7 +16,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bookstore.view.BookStoreView">
+<VBox fx:id="view" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.bookstore.view.BookStoreView">
    <children>
       <HBox alignment="CENTER" prefHeight="50.0">
          <children>
@@ -116,8 +117,8 @@
                   </GridPane>
                   <HBox alignment="CENTER" prefHeight="35.0" spacing="10.0">
                      <children>
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Add" />
-                        <Button mnemonicParsing="false" prefWidth="100.0" text="Search" />
+                        <Button fx:id="dd" mnemonicParsing="false" onAction="#add" onKeyPressed="#add" prefWidth="100.0" text="Add" />
+                        <Button mnemonicParsing="false" onAction="#search" prefWidth="100.0" text="Search" />
                      </children>
                   </HBox>
                   <Label fx:id="alert" text="Alert">
@@ -137,11 +138,31 @@
             </VBox>
             <TableView fx:id="bookTable" editable="true" prefHeight="200.0" prefWidth="200.0" tableMenuButtonVisible="true" HBox.hgrow="ALWAYS">
               <columns>
-                <TableColumn prefWidth="75.0" text="Code" />
-                <TableColumn prefWidth="75.0" text="Book Title" />
-				<TableColumn prefWidth="75.0" text="Author" />
-				<TableColumn prefWidth="75.0" text="Category" />
-				<TableColumn prefWidth="75.0" text="Price" /> 
+                <TableColumn prefWidth="75.0" text="Code">
+                	<cellValueFactory>
+                		<PropertyValueFactory property="code" />
+                	</cellValueFactory>
+                </TableColumn>
+                <TableColumn prefWidth="75.0" text="Book Title">
+                	<cellValueFactory>
+                		<PropertyValueFactory property="bookTitle" />
+                	</cellValueFactory>
+                </TableColumn>
+				<TableColumn prefWidth="75.0" text="Author">
+                	<cellValueFactory>
+                		<PropertyValueFactory property="author" />
+                	</cellValueFactory>
+                </TableColumn>
+				<TableColumn prefWidth="75.0" text="Category">
+                	<cellValueFactory>
+                		<PropertyValueFactory property="category" />
+                	</cellValueFactory>
+                </TableColumn>
+				<TableColumn prefWidth="75.0" text="Price">
+                	<cellValueFactory>
+                		<PropertyValueFactory property="price" />
+                	</cellValueFactory> 
+                </TableColumn>
               </columns>
                <HBox.margin>
                   <Insets bottom="5.0" right="5.0" top="5.0" />

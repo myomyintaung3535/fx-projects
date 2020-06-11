@@ -10,7 +10,7 @@ public interface BookStoreRepo {
 	static BookStoreRepo getInstance() {
 		return new BookStoreRepoImp();
 	}
-	void save(Book book);
+	void insert(Book book);
 	
 	List<Book> searchAll();
 	

@@ -2,6 +2,9 @@ package com.bookstore.repo;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.bookstore.entity.Book;
@@ -12,9 +15,10 @@ public class BookStoreRepoImp implements BookStoreRepo {
 
 	private static final String INSERT = "INSERT into bookstore (book_code,book_title,author,category,price) "
 			+ " values (?,?,?,?,?)";
+	private static final String SELECT = "SELECT * from bookstore";
 
 	@Override
-	public void save(Book book) {
+	public void insert(Book book) {
 		try (Connection conn = ConnectionManager.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(INSERT)) {
 			stmt.setString(1, book.getCode());
@@ -32,7 +36,32 @@ public class BookStoreRepoImp implements BookStoreRepo {
 
 	@Override
 	public List<Book> searchAll() {
-		return null;
+		List<Book> bookList = new ArrayList<>();
+
+		try (Connection conn = ConnectionManager.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(SELECT)) {
+
+			ResultSet rs = stmt.executeQuery();
+			while (rs.next()) {
+				Book b = getData(rs);
+				bookList.add(b);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return bookList;
+	}
+
+	private Book getData(ResultSet rs) throws SQLException {
+		Book b = new Book();
+		b.setCode(rs.getString(2));
+		b.setBookTitle(rs.getString(3));
+		b.setAuthor(rs.getString(4));
+		b.setCategory(Category.valueOf(rs.getString(5)));
+		b.setPrice(rs.getInt(6));
+
+		return b;
 	}
 
 	@Override
