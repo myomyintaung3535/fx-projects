@@ -10,7 +10,7 @@ public interface BookStoreRepo {
 	static BookStoreRepo getInstance() {
 		return new BookStoreRepoImp();
 	}
-	void insert(Book book);
+	void insertAndUpdate(Book book);
 	
 	List<Book> searchAll();
 	
@@ -18,5 +18,4 @@ public interface BookStoreRepo {
 	
 	void delete(Book book);
 	
-	void update(Book book);
 }

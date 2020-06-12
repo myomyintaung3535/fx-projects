@@ -3,14 +3,23 @@ package com.bookstore.entity;
 public class Book {
 
 	public enum Category {
-		History, Novels, Romance, Humour
+		History, Novels, Romance, Humours, Biography
 	}
 
+	private int id;
 	private String code;
 	private String bookTitle;
 	private String author;
 	private Category category;
 	private int price;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
 
 	public String getCode() {
 		return code;

@@ -1,6 +1,7 @@
 package com.bookstore.view;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import com.bookstore.entity.Book;
@@ -10,7 +11,9 @@ import com.bookstore.repo.BookStoreRepo;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -37,18 +40,18 @@ public class BookStoreView implements Initializable {
 	private Label alert;
 	@FXML
 	private TextArea message;
-
-	BookStoreRepo repo;
+	private BookStoreRepo repo;
+	private Book book;
+	int i = 0;
 
 	public void add() {
-		Book b = new Book();
-		b.setCode(code.getText());
-		b.setBookTitle(bookTitle.getText());
-		b.setAuthor(author.getText());
-		b.setCategory(category.getValue());
-		b.setPrice(Integer.parseInt(price.getText()));
-
-		repo.insert(b);
+		book = book.getId() > 0 ? book : new Book();
+		book.setCode(code.getText());
+		book.setBookTitle(bookTitle.getText());
+		book.setAuthor(author.getText());
+		book.setCategory(category.getValue());
+		book.setPrice(Integer.parseInt(price.getText()));
+		repo.insertAndUpdate(book);
 		refresh();
 	}
 
@@ -62,17 +65,28 @@ public class BookStoreView implements Initializable {
 		code.clear();
 		bookTitle.clear();
 		author.clear();
-		category.getItems().clear();
+		setCategoryComboBox();
 		price.clear();
 	}
 
-	public void search() {
+	private void setCategoryComboBox() {
+		category.getItems().clear();
+		category.setPromptText("Test");
+		System.out.println("invoke set method " + (i++));
+		category.getItems().addAll(Category.values());
 
+	}
+
+	public void search() {
+		List<Book> books = repo.search(code.getText(), bookTitle.getText(), author.getText(), category.getValue());
+		bookTable.getItems().clear();
+		bookTable.getItems().addAll(books);
+		clear();
 	}
 
 	@Override
 	public void initialize(URL location, ResourceBundle resources) {
-		category.getItems().addAll(Category.values());
+		setCategoryComboBox();
 		repo = BookStoreRepo.getInstance();
 		bookTable.getItems().addAll(repo.searchAll());
 		view.setOnKeyPressed(e -> {
@@ -81,5 +95,30 @@ public class BookStoreView implements Initializable {
 			}
 		});
 
+		MenuItem update = new MenuItem("update");
+		MenuItem delete = new MenuItem("delete");
+		bookTable.setContextMenu(new ContextMenu(update, delete));
+
+		bookTable.setOnMouseClicked(event -> {
+			update.setOnAction(e -> {
+				book = bookTable.getSelectionModel().getSelectedItem();
+				setBookView(book);
+			});
+
+			delete.setOnAction(e -> {
+				bookTable.getSelectionModel().getSelectedItems().forEach(repo::delete);
+				refresh();
+			});
+		});
+
+	}
+
+	private void setBookView(Book b) {
+		System.out.println(b.getAuthor());
+		code.setText(b.getCode());
+		bookTitle.setText(b.getBookTitle());
+		author.setText(b.getAuthor());
+		category.setValue(b.getCategory());
+		price.setText(String.valueOf(b.getPrice()));
 	}
 }
